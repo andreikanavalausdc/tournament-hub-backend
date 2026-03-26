@@ -1,0 +1,21 @@
+services:
+  s3-postgres:
+    image: postgres:17.2-alpine
+    container_name: tournament-hub-postgres
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    networks:
+      - tournament-hub
+    volumes:
+      - tournament-hub-db:/var/lib/postgresql/data
+    restart: unless-stopped
+    ports:
+      - ${DB_PORT}:5432
+
+volumes:
+  tournament-hub-db:
+
+networks:
+  tournament-hub:
