@@ -14,7 +14,9 @@
     "docker:up": "docker-compose --env-file ./.env -f ./docker-compose.yml -p tournament-hub up -d --build",
     "typeorm": "ts-node -r tsconfig-paths/register --files ./node_modules/typeorm/cli.js",
     "mig:create": "npm run typeorm migration:create shared/migrations/$npm_config_name",
+    "mig:create-win": "npm run typeorm migration:create shared/migrations/%npm_config_name%",
     "mig:generate": "npm run typeorm migration:generate -- -d shared/config/orm-migration.config.ts -p shared/migrations/$npm_config_name",
+    "mig:generate-win": "npm run typeorm migration:generate -- -d shared/config/orm-migration.config.ts -p shared/migrations/%npm_config_name%",
     "mig:show": "npm run typeorm migration:show -- -d shared/config/orm-migration.config.ts",
     "mig:run": "npm run typeorm migration:run -- -d shared/config/orm-migration.config.ts",
     "mig:revert": "npm run typeorm migration:revert -- -d shared/config/orm-migration.config.ts"

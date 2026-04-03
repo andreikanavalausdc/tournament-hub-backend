@@ -3,6 +3,8 @@ import path from 'node:path';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeormConfig } from '@shared/config/typeorm.config';
+import { AuthModule } from '@src/domain/auth/auth.module';
+import { UsersModule } from '@src/domain/users/users.module';
 import { CookieResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 
 @Module({
@@ -20,6 +22,8 @@ import { CookieResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
       },
       resolvers: [{ use: QueryResolver, options: ['lang'] }, new CookieResolver(['i18n'])],
     }),
+    AuthModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],
