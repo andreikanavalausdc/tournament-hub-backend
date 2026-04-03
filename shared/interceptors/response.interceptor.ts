@@ -1,8 +1,8 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { map, Observable } from 'rxjs';
-import { CommonResponseRTO } from '@shared/rto/common-response.rto';
 import { IGNORE_INTERCEPTOR } from '@shared/decorators/ignore.decorator';
+import { CommonResponseRTO } from '@shared/rto/common-response.rto';
+import { map, Observable } from 'rxjs';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {

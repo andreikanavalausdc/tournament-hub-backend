@@ -1,7 +1,7 @@
-import { CustomSnakeNamingStrategy } from '@shared/strategies/custom-snake-naming.strategy';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { config } from 'dotenv';
+import { CustomSnakeNamingStrategy } from '@shared/strategies/custom-snake-naming.strategy';
 import { environment } from '@src/environment';
+import { config } from 'dotenv';
 
 config();
 

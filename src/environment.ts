@@ -1,7 +1,8 @@
-import { config, parse } from 'dotenv';
-import * as env from 'env-var';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+
+import { config, parse } from 'dotenv';
+import * as env from 'env-var';
 
 config();
 
