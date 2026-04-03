@@ -1,9 +1,9 @@
 import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common';
-import { ResponseInterceptor } from '@shared/interceptors/response.interceptor';
 import { Reflector } from '@nestjs/core';
-import { AllExceptionsFilter } from '@shared/filters/all-exception.filter';
-import { environment } from '@src/environment';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AllExceptionsFilter } from '@shared/filters/all-exception.filter';
+import { ResponseInterceptor } from '@shared/interceptors/response.interceptor';
+import { environment } from '@src/environment';
 
 export const setAppSettings = async (
   app: INestApplication,

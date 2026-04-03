@@ -1,5 +1,6 @@
-import { Module } from '@nestjs/common';
 import path from 'node:path';
+
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeormConfig } from '@shared/config/typeorm.config';
 import { CookieResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
