@@ -1,0 +1,4 @@
+export enum UserError {
+  EMAIL_ALREADY_TAKEN = 'users.main.EMAIL_ALREADY_TAKEN',
+  USERNAME_ALREADY_TAKEN = 'users.main.USERNAME_ALREADY_TAKEN',
+}

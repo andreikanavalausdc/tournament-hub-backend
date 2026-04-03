@@ -43,10 +43,21 @@ function setUpSwagger<T extends INestApplication<unknown>>(app: T): void {
   }
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('FIT S3 API')
-    .setDescription('FIT S3 API routes')
+    .setTitle('Tournament Hub API')
+    .setDescription('Tournament Hub API routes')
     .setVersion('1.0')
-    .addCookieAuth('session_id')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'jwt-auth',
+    )
+    .addSecurityRequirements('jwt-auth')
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);

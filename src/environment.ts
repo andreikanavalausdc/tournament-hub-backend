@@ -14,6 +14,11 @@ export const environment = {
     nodeEnv: env.get('APP_NODE_ENV').asString(),
     port: env.get('APP_PORT').default('3001').asPortNumber(),
   },
+  jwt: {
+    secret: env.get('JWT_SECRET').required().asString(),
+    expires: env.get('JWT_EXPIRES').required().asInt(),
+    refreshExpires: env.get('JWT_REFRESH_EXPIRES').required().asInt(),
+  },
   database: {
     host: env.get('DB_HOST').required().default('localhost').asString(),
     port: env.get('DB_PORT').required().default('5432').asPortNumber(),
