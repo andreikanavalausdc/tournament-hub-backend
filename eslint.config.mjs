@@ -1,69 +1,50 @@
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
-import unusedImports from 'eslint-plugin-unused-imports';
-import globals from 'globals';
-import tsParser from '@typescript-eslint/parser';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
+import tseslint from 'typescript-eslint';
+import unusedImports from 'eslint-plugin-unused-imports';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import globals from 'globals';
+import eslintConfigPrettier from 'eslint-config-prettier';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all,
-});
-
-export default [
+export default tseslint.config(
     {
-        ignores: ['**/.eslintrc.js', '**/eslint.config.mjs'],
+        ignores: ['dist/**', 'node_modules/**', 'eslint.config.mjs']
     },
-    ...compat.extends(
-        'eslint:recommended',
-        'plugin:@typescript-eslint/recommended',
-        'plugin:prettier/recommended',
-    ),
+
+    js.configs.recommended,
+
+    ...tseslint.configs.recommended,
+
     {
-        plugins: {
-            '@typescript-eslint': typescriptEslint,
-            'unused-imports': unusedImports,
-        },
+        files: ['src/**/*.ts', 'apps/**/*.ts', 'libs/**/*.ts', 'shared/**/*.ts'],
 
         languageOptions: {
-            globals: {
-                ...globals.node,
-                ...globals.jest,
-            },
-
-            parser: tsParser,
+            parser: tseslint.parser,
             ecmaVersion: 2021,
             sourceType: 'module',
-
-            parserOptions: {
-                project: 'tsconfig.json',
-                tsconfigRootDir: __dirname,
-                parser: '@typescript-eslint/parser',
+            globals: {
+                ...globals.node,
+                ...globals.jest
             },
+            parserOptions: {
+                project: './tsconfig.json'
+            }
+        },
+
+        plugins: {
+            '@typescript-eslint': tseslint.plugin,
+            'unused-imports': unusedImports,
+            'simple-import-sort': simpleImportSort
         },
 
         rules: {
-            '@typescript-eslint/interface-name-prefix': 'off',
+            'simple-import-sort/imports': 'error',
+            'simple-import-sort/exports': 'error',
+
             '@typescript-eslint/explicit-module-boundary-types': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
-            '@typescript-eslint/explicit-function-return-type': ['error'],
+            '@typescript-eslint/explicit-function-return-type': 'error',
 
-            '@typescript-eslint/no-unused-vars': [
-                'error',
-                {
-                    vars: 'all',
-                    varsIgnorePattern: '^_',
-                    args: 'after-used',
-                    argsIgnorePattern: '^_',
-                    caughtErrors: 'all',
-                    caughtErrorsIgnorePattern: '^_',
-                },
-            ],
+            '@typescript-eslint/no-unused-vars': 'off',
 
             'unused-imports/no-unused-imports': 'error',
 
@@ -74,8 +55,12 @@ export default [
                     varsIgnorePattern: '^_',
                     args: 'after-used',
                     argsIgnorePattern: '^_',
-                },
-            ],
-        },
+                    caughtErrors: 'all',
+                    caughtErrorsIgnorePattern: '^_'
+                }
+            ]
+        }
     },
-];
+
+    eslintConfigPrettier
+);
