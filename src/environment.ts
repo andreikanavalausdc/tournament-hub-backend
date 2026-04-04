@@ -19,6 +19,12 @@ export const environment = {
     expires: env.get('JWT_EXPIRES').required().asInt(),
     refreshExpires: env.get('JWT_REFRESH_EXPIRES').required().asInt(),
   },
+  redis: {
+    url: env.get('REDIS_URL').asString(),
+    host: env.get('REDIS_HOST').required().asString(),
+    port: env.get('REDIS_PORT').required().asPortNumber(),
+    password: env.get('REDIS_PORT').asString(),
+  },
   database: {
     host: env.get('DB_HOST').required().default('localhost').asString(),
     port: env.get('DB_PORT').required().default('5432').asPortNumber(),
