@@ -1,8 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUserInput } from '@src/domain/users/contracts/inputs/create-user.input';
-import { GetOneUserByIdParams } from '@src/domain/users/contracts/params/get-one-user-by-id.params';
-import { GetUserProfileParams } from '@src/domain/users/contracts/params/get-user-profile.params';
-import { UserProfileRTO } from '@src/domain/users/contracts/rto/user-profile.rto';
+import type { CreateUserInput } from '@src/domain/users/contracts/inputs/create-user.input';
+import type { GetOneUserByIdParams } from '@src/domain/users/contracts/params/get-one-user-by-id.params';
+import type { GetUserProfileParams } from '@src/domain/users/contracts/params/get-user-profile.params';
+import type { ValidateUserParams } from '@src/domain/users/contracts/params/validate-user.params';
+import type { ValidateUserResult } from '@src/domain/users/contracts/results/validate-user.result';
+import type { UserProfileRTO } from '@src/domain/users/contracts/rto/user-profile.rto';
 import { UserEntity } from '@src/domain/users/entities/user.entity';
 import { UserError } from '@src/domain/users/enums/user-error.enum';
 import { UserRepository } from '@src/domain/users/repositories/user.repository';
@@ -57,5 +59,21 @@ export class UserService {
       email: user.email,
       username: user.username,
     };
+  }
+
+  async validate(params: ValidateUserParams): Promise<ValidateUserResult> {
+    const { email, password } = params;
+
+    const user = await this.repository.findOne({ where: { email }, select: ['id', 'password'] });
+    if (!user) {
+      throw new BadRequestException(UserError.INCORRECT_CREDENTIALS);
+    }
+
+    const passwordMatch = await this.passwordHashingService.compare(password, user.password);
+    if (!passwordMatch) {
+      throw new BadRequestException(UserError.INCORRECT_CREDENTIALS);
+    }
+
+    return { id: user.id };
   }
 }

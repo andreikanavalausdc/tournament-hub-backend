@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeormConfig } from '@shared/config/typeorm.config';
 import { AuthModule } from '@src/domain/auth/auth.module';
 import { UsersModule } from '@src/domain/users/users.module';
+import { FingerprintModule } from '@src/modules/fingerprint/fingerprint.module';
+import { RedisModule } from '@src/modules/redis/redis.module';
 import { CookieResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 
 @Module({
@@ -24,6 +26,8 @@ import { CookieResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
     }),
     AuthModule,
     UsersModule,
+    RedisModule,
+    FingerprintModule,
   ],
   controllers: [],
   providers: [],

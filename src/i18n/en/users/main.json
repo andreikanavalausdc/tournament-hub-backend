@@ -1,4 +1,5 @@
 {
+  "INCORRECT_CREDENTIALS": "Invalid login or password",
   "EMAIL_ALREADY_TAKEN": "Email is already in use",
   "USERNAME_ALREADY_TAKEN": "Username is already taken"
 }
