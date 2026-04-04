@@ -8,5 +8,6 @@ import { UserService } from '@src/domain/users/services/user.service';
   imports: [],
   controllers: [UserControllerV1],
   providers: [UserRepository, UserService, PasswordHashingService],
+  exports: [UserService],
 })
 export class UsersModule {}

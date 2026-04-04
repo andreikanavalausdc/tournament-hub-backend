@@ -1,4 +1,5 @@
 {
+  "INCORRECT_CREDENTIALS": "Неверный логин или пароль",
   "EMAIL_ALREADY_TAKEN": "Этот email уже используется",
   "USERNAME_ALREADY_TAKEN": "Это имя пользователя уже занято"
 }
