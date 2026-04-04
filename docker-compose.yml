@@ -1,5 +1,5 @@
 services:
-  s3-postgres:
+  postgres:
     image: postgres:17.2-alpine
     container_name: tournament-hub-postgres
     environment:
@@ -14,8 +14,20 @@ services:
     ports:
       - ${DB_PORT}:5432
 
+  redis:
+    image: redis:7-alpine
+    container_name: tournament-hub-redis
+    ports:
+      - '${REDIS_PORT:-6379}:6379'
+    volumes:
+      - tournament-hub-redis-data:/data
+    networks:
+      - tournament-hub
+    restart: unless-stopped
+
 volumes:
   tournament-hub-db:
+  tournament-hub-redis-data:
 
 networks:
   tournament-hub:
