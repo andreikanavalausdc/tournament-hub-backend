@@ -1,4 +1,5 @@
 {
   "UNEXPECTED": "Произошла непредвиденная ошибка",
-  "ENTITY_NOT_FOUND": "Ничего не найдено по критерию {criteria}"
+  "ENTITY_NOT_FOUND": "Ничего не найдено по критерию {criteria}",
+  "CREATION_FAILED": "Не удалось создать турнир"
 }
