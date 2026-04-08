@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { CreateDateColumn, Entity, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 
 import { TournamentEntity } from './tournament.entity';
 
@@ -12,4 +12,10 @@ export class TournamentParticipantEntity {
 
   @ManyToOne(() => TournamentEntity, (t) => t.participants, { onDelete: 'CASCADE' })
   tournament: TournamentEntity;
+
+  @CreateDateColumn({ type: 'timestamptz' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz' })
+  updatedAt: Date;
 }
