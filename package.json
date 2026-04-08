@@ -11,7 +11,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,shared}/**/*.ts\" --fix",
-    "docker:up": "docker-compose --env-file ./.env -f ./docker-compose.yml -p tournament-hub up -d --build",
+    "docker:up": "docker-compose --env-file .env -f ./docker-compose.yml -p tournament-hub up -d --build",
     "typeorm": "ts-node -r tsconfig-paths/register --files ./node_modules/typeorm/cli.js",
     "mig:create": "npm run typeorm migration:create shared/migrations/$npm_config_name",
     "mig:create-win": "npm run typeorm migration:create shared/migrations/%npm_config_name%",
