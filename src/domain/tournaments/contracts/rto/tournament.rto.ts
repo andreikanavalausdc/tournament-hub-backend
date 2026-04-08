@@ -1,33 +1,35 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { TournamentStatus } from '@src/domain/tournaments/enums/tournament-status.enum';
+import { TournamentVisibility } from '@src/domain/tournaments/enums/tournament-visibility.enum';
 
 export class TournamentRTO {
-  @ApiProperty({ format: 'uuid' })
+  @ApiProperty({ format: 'uuid', description: 'Identifier' })
   id: string;
 
-  @ApiProperty({ format: 'date-time' })
+  @ApiProperty({ format: 'date-time', description: 'Creation date' })
   createdAt: Date;
 
-  @ApiProperty({ format: 'date-time' })
+  @ApiProperty({ format: 'date-time', description: 'Update date' })
   updatedAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Title' })
   title: string;
 
-  @ApiProperty({ nullable: true })
+  @ApiPropertyOptional({ nullable: true, description: 'Description' })
   description: string | null;
 
-  @ApiProperty({ enum: ['public', 'private'] })
-  visibility: 'public' | 'private';
+  @ApiProperty({ enum: TournamentVisibility, description: 'Visibility' })
+  visibility: TournamentVisibility;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Rounds count' })
   roundsCount: number;
 
-  @ApiProperty({ enum: ['draft', 'active', 'completed', 'cancelled'] })
-  status: string;
+  @ApiProperty({ enum: TournamentStatus, description: 'Status' })
+  status: TournamentStatus;
 
-  @ApiProperty({ format: 'uuid', nullable: true })
+  @ApiProperty({ format: 'uuid', nullable: true, description: 'InviteToken' })
   inviteToken: string | null;
 
-  @ApiProperty({ format: 'uuid' })
+  @ApiProperty({ format: 'uuid', description: 'Owner identifier' })
   ownerId: string;
 }
