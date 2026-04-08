@@ -10,7 +10,7 @@ import { FingerprintRequest } from '../types/fingerprint-request.type';
 @Injectable()
 export class FingerprintService {
   getOrCreateFingerprint(req: FingerprintRequest, res: ServerResponse, domain: string): Fingerprint {
-    let fp = req.cookies[FINGERPRINT_COOKIE_NAME];
+    let fp = req.cookies?.[FINGERPRINT_COOKIE_NAME];
 
     if (!fp) {
       fp = uuidv4();
