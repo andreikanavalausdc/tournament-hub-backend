@@ -1,4 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { TournamentStatus } from '@src/domain/tournaments/enums/tournament-status.enum';
+import { TournamentVisibility } from '@src/domain/tournaments/enums/tournament-visibility.enum';
 import { randomUUID } from 'crypto';
 
 import type { CreateTournamentInput } from '../contracts/inputs/create-tournament.input';
@@ -17,14 +19,14 @@ export class TournamentService {
 
   async create(input: CreateTournamentInput): Promise<TournamentEntity> {
     const { title, description, visibility, roundsCount, ownerId } = input;
-    const inviteToken = visibility === 'private' ? randomUUID() : null;
+    const inviteToken = visibility === TournamentVisibility.PRIVATE ? randomUUID() : null;
 
     const tournament = this.repository.create({
       title,
       description: description ?? null,
       visibility,
       roundsCount,
-      status: 'draft',
+      status: TournamentStatus.DRAFT,
       inviteToken,
       ownerId,
     });
