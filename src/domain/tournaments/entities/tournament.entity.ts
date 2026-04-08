@@ -1,4 +1,6 @@
 import { BaseEntity } from '@shared/entities/base.entity';
+import { TournamentStatus } from '@src/domain/tournaments/enums/tournament-status.enum';
+import { TournamentVisibility } from '@src/domain/tournaments/enums/tournament-visibility.enum';
 import { Column, Entity, OneToMany } from 'typeorm';
 
 import { TournamentParticipantEntity } from './tournament-participant.entity';
@@ -11,14 +13,14 @@ export class TournamentEntity extends BaseEntity {
   @Column({ type: 'varchar', nullable: true })
   description: string | null;
 
-  @Column({ type: 'varchar' })
-  visibility: 'public' | 'private';
+  @Column({ type: 'enum', enum: TournamentVisibility })
+  visibility: TournamentVisibility;
 
   @Column({ type: 'int' })
   roundsCount: number;
 
-  @Column({ type: 'varchar', default: 'draft' })
-  status: 'draft' | 'active' | 'completed' | 'cancelled';
+  @Column({ type: 'enum', enum: TournamentStatus, default: TournamentStatus.DRAFT })
+  status: TournamentStatus;
 
   @Column({ type: 'uuid', nullable: true })
   inviteToken: string | null;
