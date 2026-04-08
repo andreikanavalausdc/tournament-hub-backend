@@ -16,7 +16,7 @@ export class CreateTournamentBodyDTO {
   @IsEnum(TournamentVisibility, {
     message: 'Visibility must be either "public" or "private"',
   })
-  visibility: 'public' | 'private';
+  visibility: TournamentVisibility;
 
   @ApiProperty({ minimum: 1 })
   @IsInt({ message: 'Rounds count must be an integer' })
