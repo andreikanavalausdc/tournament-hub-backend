@@ -23,22 +23,14 @@ export class TournamentControllerV1 {
     @Body() body: CreateTournamentBodyDTO,
     @UserPayload() user: JwtUserPayload,
   ): Promise<CreateTournamentRTO> {
-    return this.tournamentService.create({
+    const input = {
       title: body.title,
       description: body.description,
       visibility: body.visibility,
       roundsCount: body.roundsCount,
       ownerId: user.id,
-    });
+    };
 
-    // const input = {
-    //   title: body.title,
-    //   description: body.description,
-    //   visibility: body.visibility,
-    //   roundsCount: body.roundsCount,
-    //   ownerId: user.id,
-    // };
-    //
-    // return this.tournamentService.create(input);
+    return this.tournamentService.create(input);
   }
 }
