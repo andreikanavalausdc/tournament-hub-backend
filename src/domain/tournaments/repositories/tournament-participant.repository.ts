@@ -14,7 +14,7 @@ export class TournamentParticipantRepository extends Repository<TournamentPartic
     return this.metadata.tableName;
   }
 
-  async getOneByIds(tournamentId: string, userId: string): Promise<TournamentParticipantEntity> {
+  async getByTournamentAndUser(tournamentId: string, userId: string): Promise<TournamentParticipantEntity> {
     const entity = await this.findOne({ where: { tournamentId, userId } });
     if (!entity) {
       throw new NotFoundException(`${this.tableAlias}.main.NOT_FOUND`);
