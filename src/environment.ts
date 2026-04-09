@@ -23,7 +23,7 @@ export const environment = {
     url: env.get('REDIS_URL').asString(),
     host: env.get('REDIS_HOST').asString(),
     port: env.get('REDIS_PORT').default('6379').asPortNumber(),
-    password: env.get('REDIS_PORT').asString(),
+    password: env.get('REDIS_PASSWORD').asString(),
   },
   database: {
     url: env.get('DB_URL').asString(),
