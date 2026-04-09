@@ -21,15 +21,16 @@ export const environment = {
   },
   redis: {
     url: env.get('REDIS_URL').asString(),
-    host: env.get('REDIS_HOST').required().asString(),
-    port: env.get('REDIS_PORT').required().asPortNumber(),
+    host: env.get('REDIS_HOST').asString(),
+    port: env.get('REDIS_PORT').default('6379').asPortNumber(),
     password: env.get('REDIS_PORT').asString(),
   },
   database: {
-    host: env.get('DB_HOST').required().default('localhost').asString(),
-    port: env.get('DB_PORT').required().default('5432').asPortNumber(),
-    name: env.get('DB_DATABASE').required().asString(),
-    username: env.get('DB_USERNAME').required().asString(),
-    password: env.get('DB_PASSWORD').required().asString(),
+    url: env.get('DB_URL').asString(),
+    host: env.get('DB_HOST').asString(),
+    port: env.get('DB_PORT').default('5432').asPortNumber(),
+    name: env.get('DB_DATABASE').asString(),
+    username: env.get('DB_USERNAME').asString(),
+    password: env.get('DB_PASSWORD').asString(),
   },
 };

@@ -7,13 +7,8 @@ config();
 
 export class TypeormConfig implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    return {
+    const baseConfig: TypeOrmModuleOptions = {
       type: 'postgres',
-      database: environment.database.name,
-      host: environment.database.host,
-      port: environment.database.port,
-      username: environment.database.username,
-      password: environment.database.password,
       synchronize: false,
       migrationsRun: false,
       retryAttempts: 10,
@@ -23,6 +18,22 @@ export class TypeormConfig implements TypeOrmOptionsFactory {
       migrations: [`${__dirname}/../migrations/**/*{.ts,.js}`],
       namingStrategy: new CustomSnakeNamingStrategy(),
       migrationsTransactionMode: 'each',
+    };
+
+    if (environment.database.url) {
+      return {
+        ...baseConfig,
+        url: environment.database.url,
+      };
+    }
+
+    return {
+      ...baseConfig,
+      host: environment.database.host,
+      port: environment.database.port,
+      username: environment.database.username,
+      password: environment.database.password,
+      database: environment.database.name,
     };
   }
 }
