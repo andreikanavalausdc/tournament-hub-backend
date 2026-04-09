@@ -1,9 +1,7 @@
 import { BaseEntity } from '@shared/entities/base.entity';
 import { TournamentStatus } from '@src/domain/tournaments/enums/tournament-status.enum';
 import { TournamentVisibility } from '@src/domain/tournaments/enums/tournament-visibility.enum';
-import { Column, Entity, OneToMany } from 'typeorm';
-
-import { TournamentParticipantEntity } from './tournament-participant.entity';
+import { Column, Entity } from 'typeorm';
 
 @Entity('tournaments')
 export class TournamentEntity extends BaseEntity {
@@ -27,7 +25,4 @@ export class TournamentEntity extends BaseEntity {
 
   @Column({ type: 'uuid' })
   ownerId: string;
-
-  @OneToMany(() => TournamentParticipantEntity, (p) => p.tournament)
-  participants: TournamentParticipantEntity[];
 }

@@ -39,7 +39,8 @@ export class TournamentService {
 
         return saved;
       });
-    } catch {
+    } catch (error) {
+      console.error('[TournamentService.create] error:', error);
       throw new BadRequestException(TournamentError.CREATION_FAILED);
     }
   }

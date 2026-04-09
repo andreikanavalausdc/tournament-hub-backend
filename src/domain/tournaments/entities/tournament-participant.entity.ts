@@ -1,6 +1,4 @@
-import { CreateDateColumn, Entity, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
-
-import { TournamentEntity } from './tournament.entity';
+import { CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('tournament_participants')
 export class TournamentParticipantEntity {
@@ -9,9 +7,6 @@ export class TournamentParticipantEntity {
 
   @PrimaryColumn({ type: 'uuid', name: 'user_id' })
   userId: string;
-
-  @ManyToOne(() => TournamentEntity, (t) => t.participants, { onDelete: 'CASCADE' })
-  tournament: TournamentEntity;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
