@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { TournamentVisibility } from '@src/domain/tournaments/enums/tournament-visibility.enum';
 import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
 
@@ -7,7 +7,7 @@ export class CreateTournamentBodyDTO {
   @IsString({ message: 'Title must be a string' })
   title: string;
 
-  @ApiProperty({ required: false })
+  @ApiPropertyOptional()
   @IsOptional()
   @IsString({ message: 'Description must be a string' })
   description?: string;
