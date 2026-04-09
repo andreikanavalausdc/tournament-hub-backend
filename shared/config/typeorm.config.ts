@@ -18,14 +18,14 @@ export class TypeormConfig implements TypeOrmOptionsFactory {
       migrations: [`${__dirname}/../migrations/**/*{.ts,.js}`],
       namingStrategy: new CustomSnakeNamingStrategy(),
       migrationsTransactionMode: 'each',
-      ssl: {
-        rejectUnauthorized: false,
-      },
     };
 
-    if (environment.database.url) {
+    if (environment.app.nodeEnv === 'production') {
       return {
         ...baseConfig,
+        ssl: {
+          rejectUnauthorized: false,
+        },
         url: environment.database.url,
       };
     }

@@ -3,6 +3,7 @@ import path from 'node:path';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeormConfig } from '@shared/config/typeorm.config';
+import { AppController } from '@src/app.controller';
 import { AuthModule } from '@src/domain/auth/auth.module';
 import { UsersModule } from '@src/domain/users/users.module';
 import { FingerprintModule } from '@src/modules/fingerprint/fingerprint.module';
@@ -29,7 +30,7 @@ import { CookieResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
     RedisModule,
     FingerprintModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}
