@@ -1,7 +1,8 @@
+import { randomUUID } from 'node:crypto';
+
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { TournamentStatus } from '@src/domain/tournaments/enums/tournament-status.enum';
 import { TournamentVisibility } from '@src/domain/tournaments/enums/tournament-visibility.enum';
-import { randomUUID } from 'crypto';
 
 import type { CreateTournamentInput } from '../contracts/inputs/create-tournament.input';
 import { TournamentEntity } from '../entities/tournament.entity';
