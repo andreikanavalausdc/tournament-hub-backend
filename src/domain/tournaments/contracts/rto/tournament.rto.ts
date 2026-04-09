@@ -15,7 +15,7 @@ export class TournamentRTO {
   @ApiProperty({ description: 'Title' })
   title: string;
 
-  @ApiPropertyOptional({ nullable: true, description: 'Description' })
+  @ApiPropertyOptional({ description: 'Description' })
   description: string | null;
 
   @ApiProperty({ enum: TournamentVisibility, description: 'Visibility' })
@@ -27,7 +27,7 @@ export class TournamentRTO {
   @ApiProperty({ enum: TournamentStatus, description: 'Status' })
   status: TournamentStatus;
 
-  @ApiProperty({ format: 'uuid', nullable: true, description: 'InviteToken' })
+  @ApiPropertyOptional({ format: 'uuid', description: 'InviteToken' })
   inviteToken: string | null;
 
   @ApiProperty({ format: 'uuid', description: 'Owner identifier' })
