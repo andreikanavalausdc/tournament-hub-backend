@@ -18,6 +18,9 @@ export class TypeormConfig implements TypeOrmOptionsFactory {
       migrations: [`${__dirname}/../migrations/**/*{.ts,.js}`],
       namingStrategy: new CustomSnakeNamingStrategy(),
       migrationsTransactionMode: 'each',
+      ssl: {
+        rejectUnauthorized: false,
+      },
     };
 
     if (environment.database.url) {
