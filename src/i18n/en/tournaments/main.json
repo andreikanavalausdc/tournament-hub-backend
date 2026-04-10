@@ -1,7 +1,5 @@
 {
   "CREATION_FAILED": "Failed to create tournament",
-  "STATUS_DRAFT": "Draft",
-  "STATUS_ACTIVE": "Active",
   "STATUS_COMPLETED": "Completed",
   "STATUS_CANCELLED": "Cancelled",
   "VISIBILITY_PUBLIC": "Public",

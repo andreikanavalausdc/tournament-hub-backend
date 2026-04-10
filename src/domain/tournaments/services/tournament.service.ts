@@ -33,7 +33,7 @@ export class TournamentService {
     });
 
     try {
-      return await this.repository.manager.transaction(async (em) => {
+      return this.repository.manager.transaction(async (em) => {
         const saved = await em.save(TournamentEntity, tournament);
 
         await em.save(TournamentParticipantEntity, { tournamentId: saved.id, userId: ownerId });
