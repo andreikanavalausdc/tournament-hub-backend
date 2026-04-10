@@ -1,9 +1,3 @@
 {
-  "CREATION_FAILED": "Не удалось создать турнир",
-  "STATUS_DRAFT": "Черновик",
-  "STATUS_ACTIVE": "Активный",
-  "STATUS_COMPLETED": "Завершён",
-  "STATUS_CANCELLED": "Отменён",
-  "VISIBILITY_PUBLIC": "Публичный",
-  "VISIBILITY_PRIVATE": "Приватный"
+  "CREATION_FAILED": "Не удалось создать турнир"
 }
