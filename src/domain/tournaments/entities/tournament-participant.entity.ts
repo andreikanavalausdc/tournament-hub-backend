@@ -2,10 +2,10 @@ import { CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeo
 
 @Entity('tournament_participants')
 export class TournamentParticipantEntity {
-  @PrimaryColumn({ type: 'uuid', name: 'tournament_id' })
+  @PrimaryColumn({ type: 'uuid' })
   tournamentId: string;
 
-  @PrimaryColumn({ type: 'uuid', name: 'user_id' })
+  @PrimaryColumn({ type: 'uuid' })
   userId: string;
 
   @CreateDateColumn({ type: 'timestamptz' })

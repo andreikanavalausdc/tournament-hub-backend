@@ -11,13 +11,13 @@ export class TournamentEntity extends BaseEntity {
   @Column({ type: 'varchar', nullable: true })
   description: string | null;
 
-  @Column({ type: 'enum', enum: TournamentVisibility })
+  @Column({ type: 'enum', enum: TournamentVisibility, enumName: 'tournament_visibility' })
   visibility: TournamentVisibility;
 
   @Column({ type: 'int' })
   roundsCount: number;
 
-  @Column({ type: 'enum', enum: TournamentStatus, default: TournamentStatus.DRAFT })
+  @Column({ type: 'enum', enum: TournamentStatus, enumName: 'tournament_status', default: TournamentStatus.DRAFT })
   status: TournamentStatus;
 
   @Column({ type: 'uuid', nullable: true })
