@@ -38,7 +38,7 @@ export const setAppSettings = async (
 };
 
 function setUpSwagger<T extends INestApplication<unknown>>(app: T): void {
-  if (environment.app.nodeEnv === 'production') {
+  if (!environment.app.swaggerEnabled) {
     return;
   }
 
