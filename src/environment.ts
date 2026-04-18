@@ -11,8 +11,9 @@ Object.assign(process.env, loadEnv);
 
 export const environment = {
   app: {
-    nodeEnv: env.get('APP_NODE_ENV').asString(),
+    nodeEnv: env.get('APP_NODE_ENV').required().asString(),
     port: env.get('APP_PORT').default('3001').asPortNumber(),
+    swaggerEnabled: env.get('APP_SWAGGER_ENABLED').required().asBool(),
   },
   jwt: {
     secret: env.get('JWT_SECRET').required().asString(),
