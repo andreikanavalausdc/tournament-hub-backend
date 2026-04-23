@@ -26,12 +26,14 @@ export const setAppSettings = async (
     setUpSwagger(app);
   }
 
+  const corsOrigin = getCorsOrigin();
+
   app.enableShutdownHooks();
   app.enableCors({
-    origin: '*',
+    origin: corsOrigin,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
+    credentials: corsOrigin !== '*',
   });
 
   return app;
@@ -67,4 +69,14 @@ function setUpSwagger<T extends INestApplication<unknown>>(app: T): void {
       tagsSorter: 'alpha',
     },
   });
+}
+
+function getCorsOrigin(): string | string[] {
+  const origins = environment.app.corsOrigins;
+
+  if (origins.includes('*')) {
+    return '*';
+  }
+
+  return origins;
 }
