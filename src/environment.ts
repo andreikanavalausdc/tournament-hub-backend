@@ -14,6 +14,12 @@ export const environment = {
     nodeEnv: env.get('APP_NODE_ENV').required().asString(),
     port: env.get('APP_PORT').default('3001').asPortNumber(),
     swaggerEnabled: env.get('APP_SWAGGER_ENABLED').required().asBool(),
+    corsOrigins: env
+      .get('APP_CORS_ORIGINS')
+      .required()
+      .asArray()
+      .map((origin) => origin.trim())
+      .filter((origin) => origin.length > 0),
   },
   jwt: {
     secret: env.get('JWT_SECRET').required().asString(),
