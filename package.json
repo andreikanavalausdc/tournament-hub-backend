@@ -22,6 +22,7 @@
     "mig:revert": "npm run typeorm migration:revert -- -d shared/config/orm-migration.config.ts"
   },
   "dependencies": {
+    "@nestjs/bullmq": "^11.0.4",
     "@nestjs-modules/ioredis": "^2.2.1",
     "@nestjs/common": "^11.1.19",
     "@nestjs/core": "^11.1.19",
@@ -29,7 +30,7 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.1.19",
     "@nestjs/platform-socket.io": "^11.1.19",
-    "@nestjs/swagger": "^11.3.2",
+    "@nestjs/swagger": "^11.4.1",
     "@nestjs/typeorm": "^11.0.1",
     "@nestjs/websockets": "^11.1.19",
     "bcrypt": "^6.0.0",
@@ -37,8 +38,9 @@
     "class-validator": "^0.15.1",
     "dotenv": "^17.4.2",
     "env-var": "^7.5.0",
+    "bullmq": "^5.76.1",
     "ioredis": "^5.10.1",
-    "nestjs-i18n": "^10.7.0",
+    "nestjs-i18n": "^10.7.5",
     "passport-jwt": "^4.0.1",
     "pg": "^8.20.0",
     "reflect-metadata": "^0.2.2",
