@@ -1,15 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '@src/modules/redis/services/redis.service';
 
-/**
- * Tracks socket presence per tournament in Redis.
- * Structure:
- *   presence:{tournamentId}:sockets:{userId}  → Set<socketId>  (per-user open sockets)
- *   presence:{tournamentId}:users             → Set<userId>    (users with ≥1 socket)
- *
- * Multi-tab aware: removing a socket only marks the user offline when their
- * last socket is gone (sockets set becomes empty).
- */
 @Injectable()
 export class TournamentPresenceService {
   constructor(private readonly redisService: RedisService) {}
