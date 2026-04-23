@@ -1,3 +1,7 @@
 {
-  "CREATION_FAILED": "Не удалось создать турнир"
+  "CREATION_FAILED": "Не удалось создать турнир",
+  "ALREADY_PARTICIPATING_IN_UNFINISHED_TOURNAMENT": "Вы уже участвуете в другом незавершенном турнире",
+  "PRIVATE_JOIN_REQUIRES_INVITE_TOKEN": "Для подключения к приватному турниру нужен invite token",
+  "INVALID_INVITE_TOKEN": "Неверный invite token",
+  "CANNOT_JOIN_FINISHED_TOURNAMENT": "Нельзя подключиться к завершенному турниру"
 }

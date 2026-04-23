@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
+import { TournamentStatus } from '@src/domain/tournaments/enums/tournament-status.enum';
 import { EntityManager, type QueryRunner, Repository, type SelectQueryBuilder } from 'typeorm';
 
 import { TournamentParticipantEntity } from '../entities/tournament-participant.entity';
@@ -20,6 +21,23 @@ export class TournamentParticipantRepository extends Repository<TournamentPartic
       throw new NotFoundException(`${this.tableAlias}.main.NOT_FOUND`);
     }
     return entity;
+  }
+
+  async hasUnfinishedParticipation(userId: string, excludeTournamentId?: string): Promise<boolean> {
+    const qb = this.createQueryBuilder(this.tableAlias)
+      .innerJoin('tournaments', 't', `t.id = ${this.tableAlias}.tournament_id`)
+      .where(`${this.tableAlias}.user_id = :userId`, { userId })
+      .andWhere('t.status NOT IN (:...finalStatuses)', {
+        finalStatuses: [TournamentStatus.COMPLETED, TournamentStatus.CANCELLED],
+      });
+
+    if (excludeTournamentId) {
+      qb.andWhere(`${this.tableAlias}.tournament_id <> :excludeTournamentId`, { excludeTournamentId });
+    }
+
+    const count = await qb.getCount();
+
+    return count > 0;
   }
 
   protected getBaseQuery(queryRunner?: QueryRunner): SelectQueryBuilder<TournamentParticipantEntity> {

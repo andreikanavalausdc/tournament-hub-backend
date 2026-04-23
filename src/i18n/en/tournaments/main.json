@@ -1,3 +1,7 @@
 {
-  "CREATION_FAILED": "Failed to create tournament"
+  "CREATION_FAILED": "Failed to create tournament",
+  "ALREADY_PARTICIPATING_IN_UNFINISHED_TOURNAMENT": "You are already participating in another unfinished tournament",
+  "PRIVATE_JOIN_REQUIRES_INVITE_TOKEN": "Invite token is required to join a private tournament",
+  "INVALID_INVITE_TOKEN": "Invalid invite token",
+  "CANNOT_JOIN_FINISHED_TOURNAMENT": "You cannot join a finished tournament"
 }
