@@ -24,6 +24,9 @@ export class TournamentRTO {
   @ApiProperty({ description: 'Rounds count' })
   roundsCount: number;
 
+  @ApiProperty({ description: 'Submission phase duration in seconds' })
+  submissionDurationSeconds: number;
+
   @ApiProperty({ enum: TournamentStatus, description: 'Status' })
   status: TournamentStatus;
 

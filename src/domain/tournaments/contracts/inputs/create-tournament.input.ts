@@ -5,5 +5,6 @@ export interface CreateTournamentInput {
   description?: string;
   visibility: TournamentVisibility;
   roundsCount: number;
+  submissionDurationSeconds: number;
   ownerId: string;
 }
