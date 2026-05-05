@@ -65,17 +65,17 @@ export class TournamentGateway implements OnGatewayInit, OnGatewayConnection, On
       return;
     }
 
-    const joinedTournaments: string[] = client.data.joinedTournaments ?? [];
+    const removedTournaments = await this.presenceService.removeSocketFromAllTournaments(client.id, user.id);
 
-    for (const tournamentId of joinedTournaments) {
-      await this.presenceService.remove(tournamentId, user.id, client.id);
-
-      this.eventsService.emitPresenceUpdated(tournamentId, {
-        tournamentId,
-        activeCount: await this.presenceService.getCount(tournamentId),
+    for (const entry of removedTournaments) {
+      this.eventsService.emitPresenceUpdated(entry.tournamentId, {
+        tournamentId: entry.tournamentId,
+        activeCount: entry.activeCount,
         occurredAt: new Date().toISOString(),
       });
     }
+
+    client.data.joinedTournaments = [];
   }
 
   @UseGuards(WsJwtGuard)
@@ -83,6 +83,11 @@ export class TournamentGateway implements OnGatewayInit, OnGatewayConnection, On
   async onJoin(@ConnectedSocket() client: Socket, @MessageBody() dto: JoinTournamentDTO): Promise<JoinTournamentAck> {
     const { tournamentId } = dto;
     const user: JwtUserPayload = client.data.user;
+    const joinedTournaments: string[] = client.data.joinedTournaments ?? [];
+
+    if (joinedTournaments.includes(tournamentId)) {
+      return { success: true };
+    }
 
     const access = await this.roomAccessService.canJoin(user.id, tournamentId);
 
@@ -91,12 +96,12 @@ export class TournamentGateway implements OnGatewayInit, OnGatewayConnection, On
     }
 
     client.join(`tournament:${tournamentId}`);
-    client.data.joinedTournaments.push(tournamentId);
-    await this.presenceService.add(tournamentId, user.id, client.id);
+    client.data.joinedTournaments = [...joinedTournaments, tournamentId];
+    const mutation = await this.presenceService.add(tournamentId, user.id, client.id);
 
     this.eventsService.emitPresenceUpdated(tournamentId, {
       tournamentId,
-      activeCount: await this.presenceService.getCount(tournamentId),
+      activeCount: mutation.activeCount,
       occurredAt: new Date().toISOString(),
     });
 
@@ -111,16 +116,21 @@ export class TournamentGateway implements OnGatewayInit, OnGatewayConnection, On
   ): Promise<LeaveTournamentAck> {
     const { tournamentId } = dto;
     const user: JwtUserPayload = client.data.user;
+    const joinedTournaments: string[] = client.data.joinedTournaments ?? [];
+
+    if (!joinedTournaments.includes(tournamentId)) {
+      return { success: true };
+    }
 
     client.leave(`tournament:${tournamentId}`);
 
-    client.data.joinedTournaments = client.data.joinedTournaments.filter((id: string) => id !== tournamentId);
+    client.data.joinedTournaments = joinedTournaments.filter((id: string) => id !== tournamentId);
 
-    await this.presenceService.remove(tournamentId, user.id, client.id);
+    const mutation = await this.presenceService.remove(tournamentId, user.id, client.id);
 
     this.eventsService.emitPresenceUpdated(tournamentId, {
       tournamentId,
-      activeCount: await this.presenceService.getCount(tournamentId),
+      activeCount: mutation.activeCount,
       occurredAt: new Date().toISOString(),
     });
 
