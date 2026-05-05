@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { TournamentVisibility } from '@src/domain/tournaments/enums/tournament-visibility.enum';
-import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { IsEnum, IsIn, IsInt, IsOptional, IsString, Min } from 'class-validator';
 
 export class CreateTournamentBodyDTO {
   @ApiProperty({ description: 'Title' })
@@ -22,4 +22,9 @@ export class CreateTournamentBodyDTO {
   @IsInt({ message: 'Rounds count must be an integer' })
   @Min(1, { message: 'Rounds count must be at least 1' })
   roundsCount: number;
+
+  @ApiProperty({ enum: [15, 30, 45], description: 'Submission phase duration in seconds' })
+  @IsInt({ message: 'Submission duration must be an integer' })
+  @IsIn([15, 30, 45], { message: 'Submission duration must be 15, 30, or 45 seconds' })
+  submissionDurationSeconds: number;
 }
