@@ -3,5 +3,12 @@
   "ALREADY_PARTICIPATING_IN_UNFINISHED_TOURNAMENT": "You are already participating in another unfinished tournament",
   "PRIVATE_JOIN_REQUIRES_INVITE_TOKEN": "Invite token is required to join a private tournament",
   "INVALID_INVITE_TOKEN": "Invalid invite token",
-  "CANNOT_JOIN_FINISHED_TOURNAMENT": "You cannot join a finished tournament"
+  "CANNOT_JOIN_FINISHED_TOURNAMENT": "You cannot join a finished tournament",
+  "ONLY_OWNER_CAN_START_TOURNAMENT": "Only the tournament owner can start the tournament",
+  "TOURNAMENT_ALREADY_STARTED": "Tournament has already been started",
+  "NOT_ENOUGH_PARTICIPANTS_TO_START": "At least 4 participants are required to start the tournament",
+  "OWNER_CANNOT_LEAVE_TOURNAMENT": "Tournament owner cannot leave the tournament",
+  "CANNOT_LEAVE_ACTIVE_TOURNAMENT": "You cannot leave a tournament after it has started",
+  "CANNOT_SUBMIT_OUTSIDE_SUBMISSION_PHASE": "Submissions are only allowed during the submission phase",
+  "SUBMISSION_AUTHOR_IS_NOT_PARTICIPANT": "Only tournament participants can submit"
 }
