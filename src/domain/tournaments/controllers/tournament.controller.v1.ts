@@ -29,6 +29,7 @@ export class TournamentControllerV1 {
       description: body.description,
       visibility: body.visibility,
       roundsCount: body.roundsCount,
+      submissionDurationSeconds: body.submissionDurationSeconds,
       ownerId: user.id,
     };
 
@@ -48,5 +49,27 @@ export class TournamentControllerV1 {
       userId: user.id,
       inviteToken: body.inviteToken,
     });
+  }
+
+  @ApiOperation({ summary: 'Start tournament' })
+  @ApiResponse(HttpStatus.OK, Boolean, { primitive: 'boolean' })
+  @Post(':id/start')
+  async start(
+    @Param('id', new ParseUUIDPipe({ version: APP_UUID_VERSION })) tournamentId: string,
+    @UserPayload() user: JwtUserPayload,
+  ): Promise<boolean> {
+    await this.tournamentService.start(tournamentId, user.id);
+
+    return true;
+  }
+
+  @ApiOperation({ summary: 'Leave tournament' })
+  @ApiResponse(HttpStatus.OK, Boolean, { primitive: 'boolean' })
+  @Post(':id/leave')
+  async leave(
+    @Param('id', new ParseUUIDPipe({ version: APP_UUID_VERSION })) tournamentId: string,
+    @UserPayload() user: JwtUserPayload,
+  ): Promise<boolean> {
+    return this.tournamentService.leave(tournamentId, user.id);
   }
 }
