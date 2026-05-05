@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { TournamentStatus } from '@src/domain/tournaments/enums/tournament-status.enum';
-import { TournamentVisibility } from '@src/domain/tournaments/enums/tournament-visibility.enum';
 
-import { TournamentParticipantRepository } from '../repositories/tournament-participant.repository';
 import { TournamentRepository } from '../repositories/tournament.repository';
+import { TournamentParticipantRepository } from '../repositories/tournament-participant.repository';
 
 interface TournamentJoinAccessResult {
   allowed: boolean;
@@ -28,13 +26,6 @@ export class TournamentRoomAccessService {
     }
 
     if (!record) {
-      const canJoinAsPublicViewer =
-        tournament.visibility === TournamentVisibility.PUBLIC && tournament.status === TournamentStatus.ACTIVE;
-
-      if (canJoinAsPublicViewer) {
-        return { allowed: true };
-      }
-
       return {
         allowed: false,
         reason: 'You are not a participant. Join via REST POST /v1/tournaments/:id/join first',

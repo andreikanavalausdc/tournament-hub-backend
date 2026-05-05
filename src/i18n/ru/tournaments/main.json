@@ -3,5 +3,12 @@
   "ALREADY_PARTICIPATING_IN_UNFINISHED_TOURNAMENT": "Вы уже участвуете в другом незавершенном турнире",
   "PRIVATE_JOIN_REQUIRES_INVITE_TOKEN": "Для подключения к приватному турниру нужен invite token",
   "INVALID_INVITE_TOKEN": "Неверный invite token",
-  "CANNOT_JOIN_FINISHED_TOURNAMENT": "Нельзя подключиться к завершенному турниру"
+  "CANNOT_JOIN_FINISHED_TOURNAMENT": "Нельзя подключиться к завершенному турниру",
+  "ONLY_OWNER_CAN_START_TOURNAMENT": "Только владелец может запустить турнир",
+  "TOURNAMENT_ALREADY_STARTED": "Турнир уже запущен",
+  "NOT_ENOUGH_PARTICIPANTS_TO_START": "Для запуска турнира нужно минимум 4 участника",
+  "OWNER_CANNOT_LEAVE_TOURNAMENT": "Владелец не может выйти из турнира",
+  "CANNOT_LEAVE_ACTIVE_TOURNAMENT": "Нельзя выйти из турнира после его запуска",
+  "CANNOT_SUBMIT_OUTSIDE_SUBMISSION_PHASE": "Ответы можно отправлять только во время фазы отправки",
+  "SUBMISSION_AUTHOR_IS_NOT_PARTICIPANT": "Отправлять ответы могут только участники турнира"
 }

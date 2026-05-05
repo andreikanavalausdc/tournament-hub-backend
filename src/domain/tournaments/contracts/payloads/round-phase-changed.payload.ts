@@ -3,6 +3,8 @@ import { TournamentRoundPhase } from '@src/domain/tournaments/enums/tournament-r
 export interface TournamentRoundPhaseChangedPayload {
   tournamentId: string;
   roundId: string;
-  phase: TournamentRoundPhase.VOTING;
+  roundNumber: number;
+  previousPhase: TournamentRoundPhase.SUBMISSION;
+  currentPhase: TournamentRoundPhase.VOTING;
   occurredAt: string;
 }
