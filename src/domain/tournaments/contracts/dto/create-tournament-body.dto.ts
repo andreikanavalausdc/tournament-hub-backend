@@ -27,4 +27,9 @@ export class CreateTournamentBodyDTO {
   @IsInt({ message: 'Submission duration must be an integer' })
   @IsIn([15, 30, 45], { message: 'Submission duration must be 15, 30, or 45 seconds' })
   submissionDurationSeconds: number;
+
+  @ApiProperty({ enum: [15, 30, 45], description: 'Per-submission voting duration in seconds' })
+  @IsInt({ message: 'Vote duration must be an integer' })
+  @IsIn([15, 30, 45], { message: 'Vote duration must be 15, 30, or 45 seconds' })
+  voteDurationSeconds: number;
 }

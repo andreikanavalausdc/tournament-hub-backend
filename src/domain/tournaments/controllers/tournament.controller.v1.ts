@@ -30,6 +30,7 @@ export class TournamentControllerV1 {
       visibility: body.visibility,
       roundsCount: body.roundsCount,
       submissionDurationSeconds: body.submissionDurationSeconds,
+      voteDurationSeconds: body.voteDurationSeconds,
       ownerId: user.id,
     };
 

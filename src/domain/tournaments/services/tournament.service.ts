@@ -28,7 +28,8 @@ export class TournamentService {
   ) {}
 
   async create(input: CreateTournamentInput): Promise<TournamentEntity> {
-    const { title, description, visibility, roundsCount, submissionDurationSeconds, ownerId } = input;
+    const { title, description, visibility, roundsCount, submissionDurationSeconds, voteDurationSeconds, ownerId } =
+      input;
 
     const hasUnfinishedParticipation = await this.participantRepository.hasUnfinishedParticipation(ownerId);
 
@@ -44,6 +45,7 @@ export class TournamentService {
       visibility,
       roundsCount,
       submissionDurationSeconds,
+      voteDurationSeconds,
       status: TournamentStatus.DRAFT,
       inviteToken,
       ownerId,
@@ -147,6 +149,10 @@ export class TournamentService {
         phase: TournamentRoundPhase.SUBMISSION,
         submissionDeadline,
         submissionClosedAt: null,
+        currentVotingSubmissionId: null,
+        currentRevealIndex: null,
+        votingDeadline: null,
+        votingCompletedAt: null,
       });
 
       const savedRound = await em.save(TournamentRoundEntity, round);
