@@ -40,6 +40,15 @@ export class TournamentParticipantRepository extends Repository<TournamentPartic
     return count > 0;
   }
 
+  async findUserIdsByTournamentId(tournamentId: string): Promise<string[]> {
+    const participants = await this.find({
+      where: { tournamentId },
+      select: { userId: true },
+    });
+
+    return participants.map((participant) => participant.userId);
+  }
+
   protected getBaseQuery(queryRunner?: QueryRunner): SelectQueryBuilder<TournamentParticipantEntity> {
     return this.createQueryBuilder(this.tableAlias, queryRunner);
   }

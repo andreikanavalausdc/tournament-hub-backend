@@ -19,4 +19,14 @@ export class TournamentRoundSubmissionRepository extends BaseRepository<Tourname
 
     return Number(result?.count ?? 0);
   }
+
+  async findOrderedByRoundId(roundId: string): Promise<TournamentRoundSubmissionEntity[]> {
+    return this.find({
+      where: { roundId },
+      order: {
+        submittedAt: 'ASC',
+        id: 'ASC',
+      },
+    });
+  }
 }
