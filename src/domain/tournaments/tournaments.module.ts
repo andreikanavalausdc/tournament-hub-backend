@@ -7,20 +7,25 @@ import { RedisModule } from '@src/modules/redis/redis.module';
 
 import { TournamentControllerV1 } from './controllers/tournament.controller.v1';
 import { TournamentRoundSubmissionControllerV1 } from './controllers/tournament-round-submission.controller.v1';
+import { TournamentRoundVoteControllerV1 } from './controllers/tournament-round-vote.controller.v1';
 import { TournamentGateway } from './gateways/tournament.gateway';
 import { WsJwtGuard } from './guards/ws-jwt.guard';
 import { TournamentRepository } from './repositories/tournament.repository';
 import { TournamentParticipantRepository } from './repositories/tournament-participant.repository';
 import { TournamentRoundRepository } from './repositories/tournament-round.repository';
 import { TournamentRoundSubmissionRepository } from './repositories/tournament-round-submission.repository';
+import { TournamentRoundVoteRepository } from './repositories/tournament-round-vote.repository';
 import { RoundSubmissionPhaseService } from './services/round-submission-phase.service';
+import { RoundVotingFlowService } from './services/round-voting-flow.service';
 import { SubmissionPhaseDeadlineRegistryService } from './services/submission-phase-deadline-registry.service';
 import { TournamentService } from './services/tournament.service';
 import { TournamentEventsService } from './services/tournament-events.service';
 import { TournamentPresenceService } from './services/tournament-presence.service';
 import { TournamentRoomAccessService } from './services/tournament-room-access.service';
 import { TournamentRoundSubmissionService } from './services/tournament-round-submission.service';
+import { TournamentRoundVoteService } from './services/tournament-round-vote.service';
 import { TournamentSocketEmitterService } from './services/tournament-socket-emitter.service';
+import { VotingDeadlineRegistryService } from './services/voting-deadline-registry.service';
 import { WsJwtAuthService } from './services/ws-jwt-auth.service';
 import { TournamentEventsProcessor } from './workers/tournament-events.worker';
 
@@ -44,20 +49,24 @@ import { TournamentEventsProcessor } from './workers/tournament-events.worker';
     }),
     RedisModule,
   ],
-  controllers: [TournamentControllerV1, TournamentRoundSubmissionControllerV1],
+  controllers: [TournamentControllerV1, TournamentRoundSubmissionControllerV1, TournamentRoundVoteControllerV1],
   providers: [
     TournamentParticipantRepository,
     TournamentRepository,
     TournamentRoundRepository,
     TournamentRoundSubmissionRepository,
+    TournamentRoundVoteRepository,
     TournamentEventsService,
     TournamentSocketEmitterService,
     TournamentEventsProcessor,
     TournamentPresenceService,
     TournamentRoomAccessService,
     SubmissionPhaseDeadlineRegistryService,
+    VotingDeadlineRegistryService,
+    RoundVotingFlowService,
     RoundSubmissionPhaseService,
     TournamentRoundSubmissionService,
+    TournamentRoundVoteService,
     TournamentService,
     TournamentGateway,
     WsJwtAuthService,

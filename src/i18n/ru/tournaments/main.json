@@ -11,4 +11,10 @@
   "CANNOT_LEAVE_ACTIVE_TOURNAMENT": "Нельзя выйти из турнира после его запуска",
   "CANNOT_SUBMIT_OUTSIDE_SUBMISSION_PHASE": "Ответы можно отправлять только во время фазы отправки",
   "SUBMISSION_AUTHOR_IS_NOT_PARTICIPANT": "Отправлять ответы могут только участники турнира"
+  ,"CANNOT_VOTE_OUTSIDE_VOTING_PHASE": "Голосовать можно только во время фазы голосования",
+  "NO_ACTIVE_VOTING_SUBMISSION": "Сейчас нет активного ответа для голосования",
+  "VOTE_TARGET_IS_NOT_CURRENT_SUBMISSION": "Голосовать можно только за текущий раскрытый ответ",
+  "CANNOT_VOTE_FOR_OWN_SUBMISSION": "Нельзя голосовать за собственный ответ",
+  "VOTER_IS_NOT_PARTICIPANT": "Голосовать могут только участники турнира",
+  "VOTING_WINDOW_EXPIRED": "Время голосования истекло"
 }
