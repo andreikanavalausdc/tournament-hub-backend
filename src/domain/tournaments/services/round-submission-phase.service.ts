@@ -7,6 +7,7 @@ import { EntityManager } from 'typeorm';
 
 import { TournamentRoundRepository } from '../repositories/tournament-round.repository';
 import { TournamentRoundSubmissionRepository } from '../repositories/tournament-round-submission.repository';
+import { RoundVotingFlowService } from './round-voting-flow.service';
 import { SubmissionPhaseDeadlineRegistryService } from './submission-phase-deadline-registry.service';
 import { TournamentEventsService } from './tournament-events.service';
 import { TournamentPresenceService } from './tournament-presence.service';
@@ -21,6 +22,7 @@ export class RoundSubmissionPhaseService implements OnApplicationBootstrap {
     private readonly presenceService: TournamentPresenceService,
     private readonly eventsService: TournamentEventsService,
     private readonly deadlineRegistry: SubmissionPhaseDeadlineRegistryService,
+    private readonly roundVotingFlowService: RoundVotingFlowService,
   ) {}
 
   async onApplicationBootstrap(): Promise<void> {
@@ -95,6 +97,7 @@ export class RoundSubmissionPhaseService implements OnApplicationBootstrap {
     });
 
     this.logger.log(`Completed submission phase for round ${roundId}: ${reason}`);
+    await this.roundVotingFlowService.startVotingPhase(completedRound.id);
 
     return true;
   }
