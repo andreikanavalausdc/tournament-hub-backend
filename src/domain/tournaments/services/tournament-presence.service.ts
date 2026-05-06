@@ -27,6 +27,10 @@ export class TournamentPresenceService {
     return this.redisService.scard(this.usersKey(tournamentId));
   }
 
+  async getUserIds(tournamentId: string): Promise<string[]> {
+    return this.redisService.smembers(this.usersKey(tournamentId));
+  }
+
   async isOnline(tournamentId: string, userId: string): Promise<boolean> {
     return this.redisService.sismember(this.usersKey(tournamentId), userId);
   }
