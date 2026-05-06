@@ -6,5 +6,6 @@ export interface CreateTournamentInput {
   visibility: TournamentVisibility;
   roundsCount: number;
   submissionDurationSeconds: number;
+  voteDurationSeconds: number;
   ownerId: string;
 }

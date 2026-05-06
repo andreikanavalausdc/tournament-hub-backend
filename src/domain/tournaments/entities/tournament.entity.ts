@@ -20,6 +20,9 @@ export class TournamentEntity extends BaseEntity {
   @Column({ type: 'int' })
   submissionDurationSeconds: number;
 
+  @Column({ type: 'int' })
+  voteDurationSeconds: number;
+
   @Column({ type: 'enum', enum: TournamentStatus, enumName: 'tournament_status', default: TournamentStatus.DRAFT })
   status: TournamentStatus;
 
