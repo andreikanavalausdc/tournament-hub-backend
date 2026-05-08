@@ -15,4 +15,13 @@ export class TournamentRoundSubmissionEntity extends BaseEntity {
 
   @Column({ type: 'timestamptz' })
   submittedAt: Date;
+
+  @Column({ type: 'int', default: 0 })
+  likeCount: number;
+
+  @Column({ type: 'int', default: 0 })
+  dislikeCount: number;
+
+  @Column({ type: 'int', default: 0 })
+  roundScore: number;
 }

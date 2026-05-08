@@ -40,4 +40,7 @@ export class TournamentRoundEntity extends BaseEntity {
 
   @Column({ type: 'timestamptz', nullable: true })
   votingCompletedAt: Date | null;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  completedAt: Date | null;
 }

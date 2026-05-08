@@ -7,6 +7,12 @@ export interface TournamentRoundCompletedPayload {
     authorId: string;
     likeCount: number;
     dislikeCount: number;
+    score: number;
+  }[];
+  leaderboard: {
+    userId: string;
+    cumulativeScore: number;
+    rank: number;
   }[];
   nextRoundNumber: number | null;
   isLastRound: boolean;
