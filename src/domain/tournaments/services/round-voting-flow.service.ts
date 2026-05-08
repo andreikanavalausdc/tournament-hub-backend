@@ -16,6 +16,7 @@ import { TournamentParticipantRepository } from '../repositories/tournament-part
 import { TournamentRoundRepository } from '../repositories/tournament-round.repository';
 import { TournamentRoundSubmissionRepository } from '../repositories/tournament-round-submission.repository';
 import { TournamentRoundVoteRepository } from '../repositories/tournament-round-vote.repository';
+import { RoundCompletionService } from './round-completion.service';
 import { TournamentEventsService } from './tournament-events.service';
 import { TournamentPresenceService } from './tournament-presence.service';
 import { VotingDeadlineRegistryService } from './voting-deadline-registry.service';
@@ -42,6 +43,7 @@ export class RoundVotingFlowService implements OnApplicationBootstrap {
     private readonly participantRepository: TournamentParticipantRepository,
     private readonly presenceService: TournamentPresenceService,
     private readonly eventsService: TournamentEventsService,
+    private readonly roundCompletionService: RoundCompletionService,
     private readonly deadlineRegistry: VotingDeadlineRegistryService,
   ) {}
 
@@ -59,6 +61,8 @@ export class RoundVotingFlowService implements OnApplicationBootstrap {
     );
 
     if (!result) {
+      await this.completeRoundIfVotingAlreadyFinished(roundId);
+
       return false;
     }
 
@@ -108,7 +112,23 @@ export class RoundVotingFlowService implements OnApplicationBootstrap {
 
     this.logger.log(`Finalized current voting submission for round ${roundId}: ${reason}`);
 
+    if (!nextRevealPayload) {
+      await this.roundCompletionService.completeRound(roundId);
+    }
+
     return true;
+  }
+
+  private async completeRoundIfVotingAlreadyFinished(roundId: string): Promise<void> {
+    const round = await this.roundRepository.getOneById(roundId);
+
+    if (
+      round.phase === TournamentRoundPhase.VOTING &&
+      round.votingStepStatus === TournamentRoundVotingStepStatus.FINISHED &&
+      !round.completedAt
+    ) {
+      await this.roundCompletionService.completeRound(roundId);
+    }
   }
 
   private scheduleVotingDeadline(round: TournamentRoundEntity): void {

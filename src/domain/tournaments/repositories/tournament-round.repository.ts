@@ -3,7 +3,7 @@ import { InjectEntityManager } from '@nestjs/typeorm';
 import { BaseRepository } from '@shared/repositories/base.repository';
 import { TournamentRoundPhase } from '@src/domain/tournaments/enums/tournament-round-phase.enum';
 import { TournamentRoundVotingStepStatus } from '@src/domain/tournaments/enums/tournament-round-voting-step-status.enum';
-import { EntityManager } from 'typeorm';
+import { EntityManager, IsNull } from 'typeorm';
 
 import { TournamentRoundEntity } from '../entities/tournament-round.entity';
 
@@ -22,6 +22,7 @@ export class TournamentRoundRepository extends BaseRepository<TournamentRoundEnt
       where: {
         phase: TournamentRoundPhase.VOTING,
         votingStepStatus: TournamentRoundVotingStepStatus.OPEN,
+        completedAt: IsNull(),
       },
     });
   }

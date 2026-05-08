@@ -153,6 +153,7 @@ export class TournamentService {
         currentRevealIndex: null,
         votingDeadline: null,
         votingCompletedAt: null,
+        completedAt: null,
       });
 
       const savedRound = await em.save(TournamentRoundEntity, round);
