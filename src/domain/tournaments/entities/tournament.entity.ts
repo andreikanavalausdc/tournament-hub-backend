@@ -31,4 +31,7 @@ export class TournamentEntity extends BaseEntity {
 
   @Column({ type: 'uuid' })
   ownerId: string;
+
+  @Column({ type: 'uuid', nullable: true })
+  winnerId: string | null;
 }

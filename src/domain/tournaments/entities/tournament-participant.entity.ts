@@ -1,4 +1,4 @@
-import { CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('tournament_participants')
 export class TournamentParticipantEntity {
@@ -7,6 +7,9 @@ export class TournamentParticipantEntity {
 
   @PrimaryColumn({ type: 'uuid' })
   userId: string;
+
+  @Column({ type: 'int', default: 0 })
+  cumulativeScore: number;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
