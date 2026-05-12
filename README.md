@@ -49,3 +49,8 @@ npm run start:dev
 
 ## Swagger path by default
 `http://localhost:{PORT}/api#/`
+
+## WebSocket API documentation path by default
+`http://localhost:{PORT}/api-ws`
+
+The WebSocket documentation is generated from `nestjs-asyncapi` decorators. The first request may take longer because the HTML page is generated lazily and cached in memory after that.
