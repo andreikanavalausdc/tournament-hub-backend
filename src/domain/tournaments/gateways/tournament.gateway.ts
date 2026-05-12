@@ -15,9 +15,11 @@ import { JwtUserPayload } from '@shared/interfaces/jwt-user-payload.interface';
 import { WsValidationPipe } from '@shared/pipes/ws-validation.pipe';
 import { JoinTournamentAck } from '@src/domain/tournaments/contracts/acks/join-tournament.ack';
 import { LeaveTournamentAck } from '@src/domain/tournaments/contracts/acks/leave-tournament.ack';
+import { TournamentRoomActionAsyncApiDto } from '@src/domain/tournaments/contracts/asyncapi/tournament-realtime-asyncapi.dto';
 import { JoinTournamentDTO } from '@src/domain/tournaments/contracts/dto/join-tournament.dto';
 import { LeaveTournamentDTO } from '@src/domain/tournaments/contracts/dto/leave-tournament.dto';
 import { TournamentClientEvent } from '@src/domain/tournaments/contracts/events/tournament-client.event';
+import { AsyncApiReceive } from 'nestjs-asyncapi';
 import { Server, Socket } from 'socket.io';
 
 import { WsJwtGuard } from '../guards/ws-jwt.guard';
@@ -79,6 +81,18 @@ export class TournamentGateway implements OnGatewayInit, OnGatewayConnection, On
   }
 
   @UseGuards(WsJwtGuard)
+  @AsyncApiReceive({
+    channel: TournamentClientEvent.JOIN,
+    operationId: 'receiveTournamentJoin',
+    title: 'Join tournament room',
+    summary: 'Client requests to join the Socket.IO room tournament:{tournamentId}.',
+    description:
+      'Transport-level room subscription only. Only authenticated tournament participants may join in MVP.',
+    message: {
+      name: TournamentClientEvent.JOIN,
+      payload: TournamentRoomActionAsyncApiDto,
+    },
+  })
   @SubscribeMessage(TournamentClientEvent.JOIN)
   async onJoin(@ConnectedSocket() client: Socket, @MessageBody() dto: JoinTournamentDTO): Promise<JoinTournamentAck> {
     const { tournamentId } = dto;
@@ -104,6 +118,17 @@ export class TournamentGateway implements OnGatewayInit, OnGatewayConnection, On
   }
 
   @UseGuards(WsJwtGuard)
+  @AsyncApiReceive({
+    channel: TournamentClientEvent.LEAVE,
+    operationId: 'receiveTournamentLeave',
+    title: 'Leave tournament room',
+    summary: 'Client requests to leave the Socket.IO room tournament:{tournamentId}.',
+    description: 'Transport-level room unsubscription only. This does not remove the participant from the tournament.',
+    message: {
+      name: TournamentClientEvent.LEAVE,
+      payload: TournamentRoomActionAsyncApiDto,
+    },
+  })
   @SubscribeMessage(TournamentClientEvent.LEAVE)
   async onLeave(
     @ConnectedSocket() client: Socket,
