@@ -15,6 +15,10 @@ export type ActiveLiveTournamentRead = {
   phase: TournamentRoundPhase;
 };
 
+export type ActiveTournamentParticipationRead = {
+  tournamentId: string;
+};
+
 @Injectable()
 export class TournamentParticipantRepository extends Repository<TournamentParticipantEntity> {
   constructor(@InjectEntityManager() entityManager: EntityManager) {
@@ -48,6 +52,31 @@ export class TournamentParticipantRepository extends Repository<TournamentPartic
     const count = await qb.getCount();
 
     return count > 0;
+  }
+
+  async findActiveTournamentParticipationByUserId(
+    userId: string,
+    excludeTournamentId?: string,
+    manager?: EntityManager,
+  ): Promise<ActiveTournamentParticipationRead | null> {
+    const repository = manager?.getRepository(TournamentParticipantEntity) ?? this;
+
+    const qb = repository
+      .createQueryBuilder(this.tableAlias)
+      .innerJoin('tournaments', 't', `t.id = ${this.tableAlias}.tournament_id`)
+      .select('t.id', 'tournamentId')
+      .where(`${this.tableAlias}.user_id = :userId`, { userId })
+      .andWhere('t.status = :status', { status: TournamentStatus.ACTIVE })
+      .orderBy('t.created_at', 'ASC')
+      .limit(1);
+
+    if (excludeTournamentId) {
+      qb.andWhere(`${this.tableAlias}.tournament_id <> :excludeTournamentId`, { excludeTournamentId });
+    }
+
+    const result = await qb.getRawOne<ActiveTournamentParticipationRead>();
+
+    return result ?? null;
   }
 
   async findUserIdsByTournamentId(tournamentId: string): Promise<string[]> {

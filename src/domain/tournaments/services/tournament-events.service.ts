@@ -10,6 +10,7 @@ import { TournamentRoundCompletedPayload } from '@src/domain/tournaments/contrac
 import { TournamentRoundCreatedPayload } from '@src/domain/tournaments/contracts/payloads/round-created.payload';
 import { TournamentRoundPhaseChangedPayload } from '@src/domain/tournaments/contracts/payloads/round-phase-changed.payload';
 import { TournamentRoundProgressUpdatedPayload } from '@src/domain/tournaments/contracts/payloads/round-progress-updated.payload';
+import { TournamentCancelledPayload } from '@src/domain/tournaments/contracts/payloads/tournament-cancelled.payload';
 import { TournamentFinishedPayload } from '@src/domain/tournaments/contracts/payloads/tournament-finished.payload';
 import { TournamentStartedPayload } from '@src/domain/tournaments/contracts/payloads/tournament-started.payload';
 import { TournamentVoteFinalizedPayload } from '@src/domain/tournaments/contracts/payloads/vote-finalized.payload';
@@ -71,6 +72,10 @@ export class TournamentEventsService {
 
   emitTournamentFinished(tournamentId: string, payload: TournamentFinishedPayload): void {
     this.enqueueBroadcastEvent(tournamentId, TournamentServerEvent.TOURNAMENT_FINISHED, payload);
+  }
+
+  emitTournamentCancelled(tournamentId: string, payload: TournamentCancelledPayload): void {
+    this.enqueueBroadcastEvent(tournamentId, TournamentServerEvent.TOURNAMENT_CANCELLED, payload);
   }
 
   async ejectFromRoom(userId: string, tournamentId: string): Promise<void> {

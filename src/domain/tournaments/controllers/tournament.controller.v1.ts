@@ -73,4 +73,14 @@ export class TournamentControllerV1 {
   ): Promise<boolean> {
     return this.tournamentService.leave(tournamentId, user.id);
   }
+
+  @ApiOperation({ summary: 'Cancel draft tournament' })
+  @ApiResponse(HttpStatus.OK, Boolean, { primitive: 'boolean' })
+  @Post(':id/cancel')
+  async cancel(
+    @Param('id', new ParseUUIDPipe({ version: APP_UUID_VERSION })) tournamentId: string,
+    @UserPayload() user: JwtUserPayload,
+  ): Promise<boolean> {
+    return this.tournamentService.cancel(tournamentId, user.id);
+  }
 }
