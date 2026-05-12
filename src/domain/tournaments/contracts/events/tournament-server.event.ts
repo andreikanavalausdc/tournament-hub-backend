@@ -11,4 +11,5 @@ export enum TournamentServerEvent {
   VOTE_FINALIZED = 'vote:finalized',
   ROUND_COMPLETED = 'round:completed',
   TOURNAMENT_FINISHED = 'tournament:finished',
+  TOURNAMENT_CANCELLED = 'tournament:cancelled',
 }
