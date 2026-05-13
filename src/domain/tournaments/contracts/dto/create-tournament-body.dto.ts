@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { MAX_TOURNAMENT_ROUNDS } from '@src/domain/tournaments/constants/round-prompts.constant';
 import { TournamentVisibility } from '@src/domain/tournaments/enums/tournament-visibility.enum';
-import { IsEnum, IsIn, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { IsEnum, IsIn, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class CreateTournamentBodyDTO {
   @ApiProperty({ description: 'Title' })
@@ -18,9 +19,10 @@ export class CreateTournamentBodyDTO {
   })
   visibility: TournamentVisibility;
 
-  @ApiProperty({ minimum: 1, description: 'Rounds count' })
+  @ApiProperty({ minimum: 1, maximum: MAX_TOURNAMENT_ROUNDS, description: 'Rounds count' })
   @IsInt({ message: 'Rounds count must be an integer' })
   @Min(1, { message: 'Rounds count must be at least 1' })
+  @Max(MAX_TOURNAMENT_ROUNDS, { message: `Rounds count must be at most ${MAX_TOURNAMENT_ROUNDS}` })
   roundsCount: number;
 
   @ApiProperty({ enum: [15, 30, 45], description: 'Submission phase duration in seconds' })

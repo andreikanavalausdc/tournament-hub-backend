@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { GetLiveTournamentResponseRTO } from '@src/domain/users/contracts/rto/get-live-tournament-response.rto';
 import { TournamentParticipantRepository } from '@src/domain/tournaments/repositories/tournament-participant.repository';
+import { GetLiveTournamentResponseRTO } from '@src/domain/users/contracts/rto/get-live-tournament-response.rto';
 
 @Injectable()
 export class GetLiveTournamentQueryService {

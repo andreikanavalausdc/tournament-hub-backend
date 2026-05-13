@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 
 import { BadRequestException, ConflictException, ForbiddenException, HttpException, Injectable } from '@nestjs/common';
+import { MAX_TOURNAMENT_ROUNDS } from '@src/domain/tournaments/constants/round-prompts.constant';
 import type { JoinTournamentInput } from '@src/domain/tournaments/contracts/inputs/join-tournament.input';
 import { TournamentRoundEntity } from '@src/domain/tournaments/entities/tournament-round.entity';
 import { TournamentRoundPhase } from '@src/domain/tournaments/enums/tournament-round-phase.enum';
@@ -15,6 +16,7 @@ import { TournamentError } from '../enums/tournament-error.enum';
 import { TournamentRepository } from '../repositories/tournament.repository';
 import { TournamentParticipantRepository } from '../repositories/tournament-participant.repository';
 import { ActiveTournamentParticipationPolicyService } from './active-tournament-participation-policy.service';
+import { RoundPromptService } from './round-prompt.service';
 import { RoundSubmissionPhaseService } from './round-submission-phase.service';
 import { TournamentEventsService } from './tournament-events.service';
 
@@ -28,11 +30,16 @@ export class TournamentService {
     private readonly eventsService: TournamentEventsService,
     private readonly roundSubmissionPhaseService: RoundSubmissionPhaseService,
     private readonly activeParticipationPolicy: ActiveTournamentParticipationPolicyService,
+    private readonly roundPromptService: RoundPromptService,
   ) {}
 
   async create(input: CreateTournamentInput): Promise<TournamentEntity> {
     const { title, description, visibility, roundsCount, submissionDurationSeconds, voteDurationSeconds, ownerId } =
       input;
+
+    if (roundsCount > MAX_TOURNAMENT_ROUNDS) {
+      throw new BadRequestException(TournamentError.INVALID_ROUNDS_COUNT);
+    }
 
     const inviteToken = visibility === TournamentVisibility.PRIVATE ? randomUUID() : null;
 
@@ -167,6 +174,7 @@ export class TournamentService {
       );
 
       const submissionDeadline = new Date(Date.now() + tournament.submissionDurationSeconds * 1000);
+      const prompt = await this.roundPromptService.generateForTournament(tournamentId, em);
 
       tournament.status = TournamentStatus.ACTIVE;
       await em.save(TournamentEntity, tournament);
@@ -175,6 +183,7 @@ export class TournamentService {
         tournamentId,
         number: 1,
         phase: TournamentRoundPhase.SUBMISSION,
+        ...prompt,
         submissionDeadline,
         submissionClosedAt: null,
         currentVotingSubmissionId: null,
@@ -201,6 +210,7 @@ export class TournamentService {
       roundId: started.round.id,
       roundNumber: started.round.number,
       phase: TournamentRoundPhase.SUBMISSION,
+      prompt: this.roundPromptService.toPrompt(started.round),
       submissionDeadline: started.round.submissionDeadline.toISOString(),
       occurredAt: new Date().toISOString(),
     });

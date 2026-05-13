@@ -16,6 +16,7 @@ import { TournamentVoteValue } from '@src/domain/tournaments/enums/tournament-vo
 import { EntityManager } from 'typeorm';
 
 import { TournamentRoundRepository } from '../repositories/tournament-round.repository';
+import { RoundPromptService } from './round-prompt.service';
 import { RoundResultCalculatorService } from './round-result-calculator.service';
 import { RoundSubmissionPhaseService } from './round-submission-phase.service';
 import { TournamentEventsService } from './tournament-events.service';
@@ -42,6 +43,7 @@ export class RoundCompletionService {
     private readonly resultCalculator: RoundResultCalculatorService,
     private readonly eventsService: TournamentEventsService,
     private readonly moduleRef: ModuleRef,
+    private readonly roundPromptService: RoundPromptService,
   ) {}
 
   async completeRound(roundId: string): Promise<void> {
@@ -222,10 +224,12 @@ export class RoundCompletionService {
     }
 
     const submissionDeadline = new Date(now.getTime() + tournament.submissionDurationSeconds * 1000);
+    const prompt = await this.roundPromptService.generateForTournament(tournament.id, entityManager);
     const nextRound = entityManager.create(TournamentRoundEntity, {
       tournamentId: tournament.id,
       number: nextRoundNumber,
       phase: TournamentRoundPhase.SUBMISSION,
+      ...prompt,
       submissionDeadline,
       submissionClosedAt: null,
       currentVotingSubmissionId: null,
@@ -293,6 +297,7 @@ export class RoundCompletionService {
       roundId: round.id,
       roundNumber: round.number,
       phase: TournamentRoundPhase.SUBMISSION,
+      prompt: this.roundPromptService.toPrompt(round),
       submissionDeadline: round.submissionDeadline.toISOString(),
       occurredAt: occurredAt.toISOString(),
     };

@@ -1,4 +1,4 @@
-import { Body, HttpStatus, Param, ParseUUIDPipe, Post, UseGuards } from '@nestjs/common';
+import { Body, Get, HttpStatus, Param, ParseUUIDPipe, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { APP_UUID_VERSION } from '@shared/constants/app.constants';
 import { ApiController } from '@shared/decorators/api-controller.decorator';
@@ -9,13 +9,18 @@ import { AccessTokenGuard } from '@src/domain/auth/guards/access-token.guard';
 import { CreateTournamentBodyDTO } from '@src/domain/tournaments/contracts/dto/create-tournament-body.dto';
 import { JoinTournamentBodyDTO } from '@src/domain/tournaments/contracts/dto/join-tournament-body.dto';
 import { CreateTournamentRTO } from '@src/domain/tournaments/contracts/rto/create-tournament.rto';
+import { FullTournamentRTO } from '@src/domain/tournaments/contracts/rto/full-tournament.rto';
+import { GetFullTournamentQueryService } from '@src/domain/tournaments/services/get-full-tournament-query.service';
 import { TournamentService } from '@src/domain/tournaments/services/tournament.service';
 
 @ApiTags('Tournaments')
 @UseGuards(AccessTokenGuard)
 @ApiController('tournaments', 1)
 export class TournamentControllerV1 {
-  constructor(private readonly tournamentService: TournamentService) {}
+  constructor(
+    private readonly tournamentService: TournamentService,
+    private readonly getFullTournamentQueryService: GetFullTournamentQueryService,
+  ) {}
 
   @ApiOperation({ summary: 'Create tournament' })
   @ApiResponse(HttpStatus.CREATED, CreateTournamentRTO)
@@ -50,6 +55,16 @@ export class TournamentControllerV1 {
       userId: user.id,
       inviteToken: body.inviteToken,
     });
+  }
+
+  @ApiOperation({ summary: 'Get full tournament state' })
+  @ApiResponse(HttpStatus.OK, FullTournamentRTO)
+  @Get(':id/full')
+  async getFull(
+    @Param('id', new ParseUUIDPipe({ version: APP_UUID_VERSION })) tournamentId: string,
+    @UserPayload() user: JwtUserPayload,
+  ): Promise<FullTournamentRTO> {
+    return this.getFullTournamentQueryService.execute(tournamentId, user.id);
   }
 
   @ApiOperation({ summary: 'Start tournament' })
