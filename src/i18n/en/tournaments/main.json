@@ -20,5 +20,8 @@
   "VOTE_TARGET_IS_NOT_CURRENT_SUBMISSION": "You can vote only for the currently revealed submission",
   "CANNOT_VOTE_FOR_OWN_SUBMISSION": "You cannot vote for your own submission",
   "VOTER_IS_NOT_PARTICIPANT": "Only tournament participants can vote",
-  "VOTING_WINDOW_EXPIRED": "Voting window has expired"
+  "VOTING_WINDOW_EXPIRED": "Voting window has expired",
+  "INVALID_ROUNDS_COUNT": "Tournament can have at most 4 rounds",
+  "ONLY_PARTICIPANTS_CAN_VIEW_FULL_STATE": "Only tournament participants can view the full tournament state",
+  "NO_AVAILABLE_ROUND_PROMPTS": "No available round prompts left for this tournament"
 }

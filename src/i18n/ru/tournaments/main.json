@@ -14,11 +14,14 @@
   "OWNER_CANNOT_LEAVE_TOURNAMENT": "Владелец не может выйти из турнира",
   "CANNOT_LEAVE_ACTIVE_TOURNAMENT": "Нельзя выйти из турнира после его запуска",
   "CANNOT_SUBMIT_OUTSIDE_SUBMISSION_PHASE": "Ответы можно отправлять только во время фазы отправки",
-  "SUBMISSION_AUTHOR_IS_NOT_PARTICIPANT": "Отправлять ответы могут только участники турнира"
-  ,"CANNOT_VOTE_OUTSIDE_VOTING_PHASE": "Голосовать можно только во время фазы голосования",
+  "SUBMISSION_AUTHOR_IS_NOT_PARTICIPANT": "Отправлять ответы могут только участники турнира",
+  "CANNOT_VOTE_OUTSIDE_VOTING_PHASE": "Голосовать можно только во время фазы голосования",
   "NO_ACTIVE_VOTING_SUBMISSION": "Сейчас нет активного ответа для голосования",
   "VOTE_TARGET_IS_NOT_CURRENT_SUBMISSION": "Голосовать можно только за текущий раскрытый ответ",
   "CANNOT_VOTE_FOR_OWN_SUBMISSION": "Нельзя голосовать за собственный ответ",
   "VOTER_IS_NOT_PARTICIPANT": "Голосовать могут только участники турнира",
-  "VOTING_WINDOW_EXPIRED": "Время голосования истекло"
+  "VOTING_WINDOW_EXPIRED": "Время голосования истекло",
+  "INVALID_ROUNDS_COUNT": "В турнире может быть не больше 4 раундов",
+  "ONLY_PARTICIPANTS_CAN_VIEW_FULL_STATE": "Только участники турнира могут смотреть полное состояние турнира",
+  "NO_AVAILABLE_ROUND_PROMPTS": "Для этого турнира не осталось доступных вопросов"
 }
