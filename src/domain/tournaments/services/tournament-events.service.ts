@@ -15,8 +15,8 @@ import {
   VotingSubmissionRevealedAsyncApiDto,
 } from '@src/domain/tournaments/contracts/asyncapi/tournament-realtime-asyncapi.dto';
 import type { TournamentEventPayload } from '@src/domain/tournaments/contracts/jobs/tournament-event-payload.job';
-import { TournamentJobName,TOURNAMENTS_QUEUE_NAME } from '@src/domain/tournaments/contracts/jobs/tournament-events.job';
 import type { TournamentJobData } from '@src/domain/tournaments/contracts/jobs/tournament-events.job';
+import { TournamentJobName,TOURNAMENTS_QUEUE_NAME } from '@src/domain/tournaments/contracts/jobs/tournament-events.job';
 import type { TournamentParticipantJoinedPayload } from '@src/domain/tournaments/contracts/payloads/participant-joined.payload';
 import type { TournamentParticipantLeftPayload } from '@src/domain/tournaments/contracts/payloads/participant-left.payload';
 import type { TournamentPresenceUpdatedPayload } from '@src/domain/tournaments/contracts/payloads/presence-updated.payload';
@@ -30,8 +30,8 @@ import type { TournamentStartedPayload } from '@src/domain/tournaments/contracts
 import type { TournamentVoteFinalizedPayload } from '@src/domain/tournaments/contracts/payloads/vote-finalized.payload';
 import type { TournamentVoteProgressUpdatedPayload } from '@src/domain/tournaments/contracts/payloads/vote-progress-updated.payload';
 import type { TournamentVotingSubmissionRevealedPayload } from '@src/domain/tournaments/contracts/payloads/voting-submission-revealed.payload';
-import { Queue } from 'bullmq';
 import type { JobsOptions } from 'bullmq';
+import { Queue } from 'bullmq';
 import { AsyncApi, AsyncApiSend } from 'nestjs-asyncapi';
 
 import { TournamentServerEvent } from '../contracts/events/tournament-server.event';

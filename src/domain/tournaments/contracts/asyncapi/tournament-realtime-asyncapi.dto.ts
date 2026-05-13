@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { TournamentRoundPromptType } from '@src/domain/tournaments/enums/tournament-round-prompt-type.enum';
 
 class TournamentIdField {
   @ApiProperty({
@@ -46,6 +47,25 @@ export class TournamentStartedAsyncApiDto extends OccurredAtField {
   roundsCount: number;
 }
 
+export class RoundPromptContentAsyncApiDto {
+  @ApiProperty({ example: 'The best way to impress an alien visiting Earth.' })
+  en: string;
+
+  @ApiProperty({ example: 'Лучший способ впечатлить инопланетянина, который прилетел на Землю.' })
+  ru: string;
+}
+
+export class RoundPromptAsyncApiDto {
+  @ApiProperty({ example: 'alien_impress' })
+  key: string;
+
+  @ApiProperty({ enum: TournamentRoundPromptType, example: TournamentRoundPromptType.TEXT })
+  type: TournamentRoundPromptType.TEXT;
+
+  @ApiProperty({ type: () => RoundPromptContentAsyncApiDto })
+  content: RoundPromptContentAsyncApiDto;
+}
+
 export class RoundCreatedAsyncApiDto extends OccurredAtField {
   @ApiProperty({ description: 'Round UUID.', example: 'c1a2b3c4-2222-4a22-8b33-123456789002', format: 'uuid' })
   roundId: string;
@@ -55,6 +75,9 @@ export class RoundCreatedAsyncApiDto extends OccurredAtField {
 
   @ApiProperty({ enum: ['SUBMISSION'], example: 'SUBMISSION' })
   phase: 'SUBMISSION';
+
+  @ApiProperty({ type: () => RoundPromptAsyncApiDto })
+  prompt: RoundPromptAsyncApiDto;
 
   @ApiProperty({ example: '2026-04-20T12:10:00.000Z', format: 'date-time' })
   submissionDeadline: string;
