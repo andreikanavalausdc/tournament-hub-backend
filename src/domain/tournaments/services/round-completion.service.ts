@@ -23,6 +23,11 @@ import { TournamentEventsService } from './tournament-events.service';
 
 interface CompletionTransactionResult {
   completedPayload: TournamentRoundCompletedPayload;
+  isLastRound: boolean;
+  nextRoundNumber: number | null;
+}
+
+interface CompletionFollowUpResult {
   createdPayload: TournamentRoundCreatedPayload | null;
   finishedPayload: TournamentFinishedPayload | null;
   nextRound: TournamentRoundEntity | null;
@@ -36,6 +41,7 @@ interface RawVoteAggregate {
 
 @Injectable()
 export class RoundCompletionService {
+  private readonly nextRoundDelayMs = 3000;
   private readonly logger = new Logger(RoundCompletionService.name);
 
   constructor(
@@ -55,19 +61,25 @@ export class RoundCompletionService {
       return;
     }
 
-    if (result.nextRound) {
-      const submissionPhaseService = this.moduleRef.get(RoundSubmissionPhaseService, { strict: false });
-      submissionPhaseService.scheduleSubmissionDeadline(result.nextRound);
-    }
-
     this.eventsService.emitRoundCompleted(result.completedPayload.tournamentId, result.completedPayload);
 
-    if (result.createdPayload) {
-      this.eventsService.emitRoundCreated(result.createdPayload.tournamentId, result.createdPayload);
+    await this.delay(this.nextRoundDelayMs);
+
+    const followUp = await this.roundRepository.manager.transaction((entityManager) =>
+      this.completeRoundFollowUpInTransaction(entityManager, roundId, result),
+    );
+
+    if (followUp?.nextRound) {
+      const submissionPhaseService = this.moduleRef.get(RoundSubmissionPhaseService, { strict: false });
+      submissionPhaseService.scheduleSubmissionDeadline(followUp.nextRound);
     }
 
-    if (result.finishedPayload) {
-      this.eventsService.emitTournamentFinished(result.finishedPayload.tournamentId, result.finishedPayload);
+    if (followUp?.createdPayload) {
+      this.eventsService.emitRoundCreated(followUp.createdPayload.tournamentId, followUp.createdPayload);
+    }
+
+    if (followUp?.finishedPayload) {
+      this.eventsService.emitTournamentFinished(followUp.finishedPayload.tournamentId, followUp.finishedPayload);
     }
 
     this.logger.log(`Completed round ${roundId}`);
@@ -119,21 +131,63 @@ export class RoundCompletionService {
     const completedPayload = this.buildRoundCompletedPayload(round, results, leaderboard, nextRoundNumber, completedAt);
 
     if (isLastRound) {
-      const finishedPayload = await this.finishTournament(entityManager, tournament, leaderboard, completedAt);
-
       return {
         completedPayload,
+        isLastRound,
+        nextRoundNumber,
+      };
+    }
+
+    return {
+      completedPayload,
+      isLastRound,
+      nextRoundNumber,
+    };
+  }
+
+  private async completeRoundFollowUpInTransaction(
+    entityManager: EntityManager,
+    roundId: string,
+    result: CompletionTransactionResult,
+  ): Promise<CompletionFollowUpResult | null> {
+    const round = await entityManager.findOne(TournamentRoundEntity, {
+      where: { id: roundId },
+    });
+
+    if (!round?.completedAt) {
+      return null;
+    }
+
+    const tournament = await entityManager.findOne(TournamentEntity, {
+      where: { id: round.tournamentId },
+      lock: { mode: 'pessimistic_write' },
+    });
+
+    if (!tournament || tournament.status !== TournamentStatus.ACTIVE) {
+      return null;
+    }
+
+    const now = new Date();
+
+    if (result.isLastRound) {
+      const leaderboard = await this.loadLeaderboard(entityManager, round.tournamentId);
+      const finishedPayload = await this.finishTournament(entityManager, tournament, leaderboard, now);
+
+      return {
         createdPayload: null,
         finishedPayload,
         nextRound: null,
       };
     }
 
-    const nextRound = await this.createNextRound(entityManager, tournament, round.number + 1, completedAt);
+    if (!result.nextRoundNumber) {
+      return null;
+    }
+
+    const nextRound = await this.createNextRound(entityManager, tournament, result.nextRoundNumber, now);
 
     return {
-      completedPayload,
-      createdPayload: this.buildRoundCreatedPayload(nextRound, completedAt),
+      createdPayload: this.buildRoundCreatedPayload(nextRound, now),
       finishedPayload: null,
       nextRound,
     };
@@ -301,5 +355,11 @@ export class RoundCompletionService {
       submissionDeadline: round.submissionDeadline.toISOString(),
       occurredAt: occurredAt.toISOString(),
     };
+  }
+
+  private async delay(milliseconds: number): Promise<void> {
+    await new Promise((resolve) => {
+      setTimeout(resolve, milliseconds);
+    });
   }
 }

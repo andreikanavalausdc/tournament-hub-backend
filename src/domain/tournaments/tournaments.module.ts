@@ -16,6 +16,7 @@ import { TournamentRoundRepository } from './repositories/tournament-round.repos
 import { TournamentRoundSubmissionRepository } from './repositories/tournament-round-submission.repository';
 import { TournamentRoundVoteRepository } from './repositories/tournament-round-vote.repository';
 import { ActiveTournamentParticipationPolicyService } from './services/active-tournament-participation-policy.service';
+import { GetDraftTournamentQueryService } from './services/get-draft-tournament-query.service';
 import { GetFullTournamentQueryService } from './services/get-full-tournament-query.service';
 import { RoundCompletionService } from './services/round-completion.service';
 import { RoundPromptService } from './services/round-prompt.service';
@@ -69,6 +70,7 @@ import { TournamentEventsProcessor } from './workers/tournament-events.worker';
     SubmissionPhaseDeadlineRegistryService,
     VotingDeadlineRegistryService,
     ActiveTournamentParticipationPolicyService,
+    GetDraftTournamentQueryService,
     GetFullTournamentQueryService,
     RoundPromptService,
     RoundResultCalculatorService,
