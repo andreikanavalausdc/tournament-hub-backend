@@ -1,4 +1,4 @@
-import { Body, Get, HttpStatus, Param, ParseUUIDPipe, Post, UseGuards } from '@nestjs/common';
+import { Body, Get, HttpStatus, Param, ParseUUIDPipe, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { APP_UUID_VERSION } from '@shared/constants/app.constants';
 import { ApiController } from '@shared/decorators/api-controller.decorator';
@@ -7,9 +7,18 @@ import { UserPayload } from '@shared/decorators/user-payload.decorator';
 import type { JwtUserPayload } from '@shared/interfaces/jwt-user-payload.interface';
 import { AccessTokenGuard } from '@src/domain/auth/guards/access-token.guard';
 import { CreateTournamentBodyDTO } from '@src/domain/tournaments/contracts/dto/create-tournament-body.dto';
+import { GetDraftTournamentsQueryDTO } from '@src/domain/tournaments/contracts/dto/get-draft-tournaments-query.dto';
 import { JoinTournamentBodyDTO } from '@src/domain/tournaments/contracts/dto/join-tournament-body.dto';
 import { CreateTournamentRTO } from '@src/domain/tournaments/contracts/rto/create-tournament.rto';
+import {
+  DraftTournamentDetailsRTO,
+  DraftTournamentListItemRTO,
+} from '@src/domain/tournaments/contracts/rto/draft-tournament.rto';
 import { FullTournamentRTO } from '@src/domain/tournaments/contracts/rto/full-tournament.rto';
+import {
+  GetDraftTournamentQueryService,
+  PaginatedDraftTournamentsRTO,
+} from '@src/domain/tournaments/services/get-draft-tournament-query.service';
 import { GetFullTournamentQueryService } from '@src/domain/tournaments/services/get-full-tournament-query.service';
 import { TournamentService } from '@src/domain/tournaments/services/tournament.service';
 
@@ -19,8 +28,18 @@ import { TournamentService } from '@src/domain/tournaments/services/tournament.s
 export class TournamentControllerV1 {
   constructor(
     private readonly tournamentService: TournamentService,
+    private readonly getDraftTournamentQueryService: GetDraftTournamentQueryService,
     private readonly getFullTournamentQueryService: GetFullTournamentQueryService,
   ) {}
+
+  @ApiOperation({ summary: 'Get draft tournaments' })
+  @ApiResponse(HttpStatus.OK, DraftTournamentListItemRTO, { isPaginated: true })
+  @Get()
+  async getDraftTournaments(
+    @Query() query: GetDraftTournamentsQueryDTO,
+  ): Promise<PaginatedDraftTournamentsRTO> {
+    return this.getDraftTournamentQueryService.findAll(query);
+  }
 
   @ApiOperation({ summary: 'Create tournament' })
   @ApiResponse(HttpStatus.CREATED, CreateTournamentRTO)
@@ -65,6 +84,15 @@ export class TournamentControllerV1 {
     @UserPayload() user: JwtUserPayload,
   ): Promise<FullTournamentRTO> {
     return this.getFullTournamentQueryService.execute(tournamentId, user.id);
+  }
+
+  @ApiOperation({ summary: 'Get draft tournament details' })
+  @ApiResponse(HttpStatus.OK, DraftTournamentDetailsRTO)
+  @Get(':id')
+  async getDraftTournament(
+    @Param('id', new ParseUUIDPipe({ version: APP_UUID_VERSION })) tournamentId: string,
+  ): Promise<DraftTournamentDetailsRTO> {
+    return this.getDraftTournamentQueryService.getOneById(tournamentId);
   }
 
   @ApiOperation({ summary: 'Start tournament' })
